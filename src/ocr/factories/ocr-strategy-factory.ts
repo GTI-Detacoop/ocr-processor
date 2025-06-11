@@ -1,9 +1,8 @@
-import { OCRStrategy } from '../interfaces/OCRStrategy';
-import { IdCardOCRStrategy } from '../strategies/IdCardOCRStrategy';
-import { PensionOCRStrategy } from '../strategies/PensionOCRStrategy';
-import { AFPOCRStrategy } from '../strategies/AFPOCRStrategy';
-
-export type DocumentType = 'ID_CARD' | 'PENSION_IPS' | 'AFP_STATEMENT';
+import { OCRStrategy } from '../interfaces/ocr-strategy';
+import { IdCardOCRStrategy } from '../strategies/id-card-ocr.strategy';
+import { PensionOCRStrategy } from '../strategies/pension-ocr.strategy';
+import { AFPOCRStrategy } from '../strategies/afp-ocr.strategy';
+import { DocumentType } from '../types/document.type';
 
 export class OCRStrategyFactory {
   private static strategies = new Map<DocumentType, OCRStrategy>([
@@ -18,5 +17,12 @@ export class OCRStrategyFactory {
       throw new Error(`Unsupported document type: ${documentType}`);
     }
     return strategy;
+  }
+
+  static registerStrategy(
+    documentType: DocumentType,
+    strategy: OCRStrategy,
+  ): void {
+    this.strategies.set(documentType, strategy);
   }
 }

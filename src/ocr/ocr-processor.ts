@@ -1,5 +1,5 @@
-import { OCRStrategy } from './interfaces/OCRStrategy';
-import { OCRResult } from './interfaces/OCRResult';
+import { OCRStrategy } from './interfaces/ocr-strategy';
+import { OCRResult } from './interfaces/ocr-result';
 
 export class OCRProcessor {
   private strategy: OCRStrategy;

@@ -1,6 +1,6 @@
-import { OCRStrategy } from '../interfaces/OCRStrategy';
-import { OCRResult } from '../interfaces/OCRResult';
-import { OCRConfig } from '../interfaces/OCRConfig';
+import { OCRStrategy } from '../interfaces/ocr-strategy';
+import { OCRResult } from '../interfaces/ocr-result';
+import { OCRConfig } from '../interfaces/ocr-config';
 
 export class IdCardOCRStrategy implements OCRStrategy {
   private readonly defaultConfig: OCRConfig = {
