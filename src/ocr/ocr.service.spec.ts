@@ -4,6 +4,7 @@ import { IdCardOCRStrategy } from './strategies/id-card-ocr.strategy';
 import { OCRResult } from './interfaces/ocr-result';
 import { PensionOCRStrategy } from './strategies/pension-ocr.strategy';
 import { AFPOCRStrategy } from './strategies/afp-ocr.strategy';
+import { DocumentsToBeProcessed } from './types/document.type';
 
 describe('OcrService', () => {
   let service: OcrService;
@@ -31,7 +32,10 @@ describe('OcrService', () => {
     const mockProcess = jest
       .spyOn(IdCardOCRStrategy.prototype, 'process')
       .mockResolvedValue(mockOcrResult);
-    const result = await service.processDocument(Buffer.from([]), 'ID_CARD');
+    const result = await service.processDocument(
+      Buffer.from([]),
+      DocumentsToBeProcessed.ID_CARD,
+    );
     expect(result).toBeDefined();
     expect(mockProcess).toHaveBeenCalled();
     mockProcess.mockClear();
