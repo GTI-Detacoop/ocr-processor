@@ -8,6 +8,7 @@ import {
   Logger,
   UsePipes,
   ValidationPipe,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiConsumes, ApiOperation, ApiBody } from '@nestjs/swagger';
@@ -47,7 +48,13 @@ export class OcrController {
       },
     }),
   )
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
   async processDocument(
     @UploadedFile() file: Express.Multer.File,
     @Body() processDocumentDto: ProcessDocumentDto,
@@ -56,18 +63,10 @@ export class OcrController {
       throw new BadRequestException('No file uploaded');
     }
 
-    this.logger.debug(
-      `Processing ${processDocumentDto.documentType} document: ${file.originalname}`,
-    );
-
     try {
       const result = await this.ocrService.processDocument(
         file.buffer,
         processDocumentDto.documentType,
-      );
-
-      this.logger.debug(
-        `Successfully processed document: ${file.originalname}`,
       );
 
       return {
@@ -78,11 +77,18 @@ export class OcrController {
       };
     } catch (error) {
       this.logger.error(
-        `Error processing document ${file.originalname}: ${error}`,
+        `Error processing document ${file.originalname}`,
+        error instanceof Error ? error.stack : error,
       );
 
-      throw new BadRequestException(
-        `Error processing document: ${file.originalname}`,
+      if (error instanceof Error) {
+        throw new BadRequestException(
+          `Error processing document: ${error.message}`,
+        );
+      }
+
+      throw new InternalServerErrorException(
+        'An unexpected error occurred while processing the document',
       );
     }
   }

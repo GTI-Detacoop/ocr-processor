@@ -7,26 +7,17 @@ import {
 
 export class ProcessDocumentDto {
   @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'Document image file (jpg, jpeg, png, or webp)',
-    required: true,
-  })
-  @IsNotEmpty({ message: 'File is required' })
-  file: Express.Multer.File;
-
-  @ApiProperty({
     enum: DocumentsToBeProcessed,
     enumName: 'DocumentType',
-    description: ' Type of document to process',
+    description: 'Type of document to process',
     example: DocumentsToBeProcessed.ID_CARD,
     required: true,
   })
   @IsEnum(DocumentsToBeProcessed, {
-    message: `Document type must be one of: ${Object.values(
+    message: `documentType must be one of: ${Object.values(
       DocumentsToBeProcessed,
     ).join(', ')}`,
   })
-  @IsNotEmpty({ message: 'Document type is required' })
+  @IsNotEmpty({ message: 'documentType is required' })
   documentType: DocumentsToBeProcessedType;
 }
