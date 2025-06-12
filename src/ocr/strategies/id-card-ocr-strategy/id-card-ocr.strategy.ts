@@ -7,9 +7,11 @@ import * as sharp from 'sharp';
 import { CedulaParser } from './id-card-parser';
 
 import { IdCardData } from '../../interfaces/id-card-data';
+import { IdCardValidator } from './id-card-validator';
 
 export class IdCardOCRStrategy implements OCRStrategy {
   private readonly parser = CedulaParser;
+  private readonly validator = IdCardValidator;
   private readonly defaultConfig: OCRConfig = {
     language: 'spa',
   };
@@ -101,37 +103,6 @@ export class IdCardOCRStrategy implements OCRStrategy {
   }
 
   private validateExtractedData(data: IdCardData): boolean {
-    const requiredFields = ['run', 'nombres', 'apellidos'];
-
-    for (const field of requiredFields) {
-      if (!data[field as keyof IdCardData]) {
-        return false;
-      }
-    }
-
-    if (!this.validateRun(data.run)) {
-      return false;
-    }
-
-    const dateFields = ['fechaNacimiento', 'fechaEmision', 'fechaVencimiento'];
-    for (const field of dateFields) {
-      const value = data[field as keyof IdCardData];
-      if (value && !this.validateChileanDate(value)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  private validateRun(run: string): boolean {
-    const runRegex = /^\d{1,2}\.\d{3}\.\d{3}-[\dKk]$/;
-    return runRegex.test(run);
-  }
-
-  private validateChileanDate(date: string): boolean {
-    const dateRegex =
-      /^\d{1,2}\s*(ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC)\s*\d{4}$/i;
-    return dateRegex.test(date);
+    return this.validator.validate(data);
   }
 }
