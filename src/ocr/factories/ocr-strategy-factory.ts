@@ -1,5 +1,5 @@
 import { OCRStrategy } from '../interfaces/ocr-strategy';
-import { IdCardOCRStrategy } from '../strategies/id-card-ocr.strategy';
+import { IdCardOCRStrategy } from '../strategies/id-card-ocr-strategy/id-card-ocr.strategy';
 import { PensionOCRStrategy } from '../strategies/pension-ocr.strategy';
 import { AFPOCRStrategy } from '../strategies/afp-ocr.strategy';
 import { DocumentsToBeProcessedType } from '../types/document.type';
