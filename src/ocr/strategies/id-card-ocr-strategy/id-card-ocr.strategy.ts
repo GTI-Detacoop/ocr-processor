@@ -2,14 +2,12 @@ import { OCRStrategy } from '../../interfaces/ocr-strategy';
 import { OCRResult } from '../../interfaces/ocr-result';
 import { OCRConfig } from '../../interfaces/ocr-config';
 import { createWorker, PSM } from 'tesseract.js';
-
-import * as sharp from 'sharp';
 import { CedulaParser } from './id-card-parser';
 
 import { IdCardData } from '../../interfaces/id-card-data';
 import { IdCardValidator } from './id-card-validator';
 
-export class IdCardOCRStrategy implements OCRStrategy {
+export class IdCardOCRStrategy extends OCRStrategy {
   private readonly parser = CedulaParser;
   private readonly validator = IdCardValidator;
   private readonly defaultConfig: OCRConfig = {
@@ -48,26 +46,6 @@ export class IdCardOCRStrategy implements OCRStrategy {
           error instanceof Error ? error.message : 'Unknown error occurred',
         ],
       };
-    }
-  }
-
-  private async preprocessImage(imageBuffer: Buffer): Promise<Buffer> {
-    try {
-      const processedImage = await sharp(imageBuffer)
-        .grayscale()
-        .normalize()
-        .sharpen()
-        .resize(2000, null, {
-          withoutEnlargement: false,
-          kernel: sharp.kernel.lanczos3,
-        })
-        .threshold(128)
-        .toBuffer();
-
-      return processedImage;
-    } catch (error) {
-      console.error('Error preprocessing image:', error);
-      return imageBuffer;
     }
   }
 

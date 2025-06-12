@@ -90,9 +90,9 @@ export class CedulaParser {
   }
 
   private static extractIssueDate(text: string): string {
-    const regex = /FECHA\s+DE\s+EM[I1]S[ÍI1]?[O0]N\s*\n\s*([A-Z\d\s]{5,20})/i;
+    const regex = /FECHA\s+DE\s+EM[I1]S[ÍI1]?[OÓ0]N\s*\n\s*([A-Z\d\s]{5,20})/i;
     const match = text.match(regex);
-    return match ? match[1].trim().toUpperCase() : '';
+    return match ? match[1].trim().toUpperCase().split('\n')[0] : '';
   }
 
   private static extractExpirationDate(text: string): string {
