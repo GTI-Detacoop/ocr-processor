@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OcrService } from './ocr.service';
-import { IdCardOCRStrategy } from './strategies/id-card-ocr.strategy';
+import { IdCardOCRStrategy } from './strategies/id-card-ocr-strategy/id-card-ocr.strategy';
 import { OCRResult } from './interfaces/ocr-result';
 import { PensionOCRStrategy } from './strategies/pension-ocr.strategy';
 import { AFPOCRStrategy } from './strategies/afp-ocr.strategy';
